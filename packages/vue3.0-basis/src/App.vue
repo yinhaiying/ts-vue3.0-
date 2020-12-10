@@ -1,15 +1,20 @@
 <template>
-  <RefComputed msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div>
+    <RefComputed msg="Welcome to Your Vue.js + TypeScript App"/>
+    <ReactiveComp/>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import RefComputed from './components/ref-computed.vue';
+import RefComputed from './components/ref.vue';
+import ReactiveComp from './components/reactive.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
-    RefComputed
+    RefComputed,
+    ReactiveComp
   }
 });
 </script>

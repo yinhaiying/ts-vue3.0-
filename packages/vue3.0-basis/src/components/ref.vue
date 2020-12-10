@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <h1>Vue3.0</h1>
+    <h1>ref</h1>
     <h1>{{count}}</h1>
     <h1>{{double}}</h1>
     <button @click = "increase">+</button>
