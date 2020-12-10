@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="item">
     <h1>ref</h1>
     <h1>{{count}}</h1>
     <h1>{{double}}</h1>
@@ -32,3 +32,8 @@ export default defineComponent({
 });
 </script>
 
+<style lang="less">
+  .item{
+    margin:30px;
+  }
+</style>

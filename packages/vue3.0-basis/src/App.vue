@@ -1,7 +1,8 @@
 <template>
-  <div>
-    <RefComputed msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div style = "display:flex">
+    <RefComputed/>
     <ReactiveComp/>
+    <ToRefComp/>
   </div>
 </template>
 
@@ -9,12 +10,14 @@
 import { defineComponent } from 'vue';
 import RefComputed from './components/ref.vue';
 import ReactiveComp from './components/reactive.vue';
+import ToRefComp from './components/toref.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
     RefComputed,
-    ReactiveComp
+    ReactiveComp,
+    ToRefComp
   }
 });
 </script>

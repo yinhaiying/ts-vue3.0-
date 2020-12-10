@@ -1,14 +1,14 @@
 <template>
   <div class="item">
-    <h1>reactive</h1>
-    <h1>{{data.count}}</h1>
-    <h1>{{data.double}}</h1>
-    <button @click = "data.increase">+</button>
+    <h1>toRefs</h1>
+    <h1>{{count}}</h1>
+    <h1>{{double}}</h1>
+    <button @click = "increase">+</button>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent,computed,reactive } from 'vue';
+import { defineComponent,computed,reactive,toRefs } from 'vue';
 
 interface DataProps {
   count: number;
@@ -16,7 +16,7 @@ interface DataProps {
   increase: () => void;
 }
 export default defineComponent({
-  name: 'ReactiveComp',
+  name: 'ToRef',
   props: {
     msg: String,
   },
@@ -32,16 +32,18 @@ export default defineComponent({
       count: 0,
       double: computed(() => data.count * 2),
       increase: () => data.count++,
-    })
+    });
+    const refData = toRefs(data)
     return {
-      data
+      // ...data   得到的不是一个响应式的值，只是普通的js类型
+      ...refData
     }
   }
 });
 </script>
+
 <style lang="less">
   .item{
     margin:30px;
   }
 </style>
-
