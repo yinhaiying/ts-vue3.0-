@@ -4,6 +4,7 @@
     <ReactiveComp/>
     <ToRefComp/>
     <LifeCycle/>
+    <WatchEffectComp/>
   </div>
 </template>
 
@@ -12,14 +13,16 @@ import { defineComponent } from 'vue';
 import RefComputed from './components/ref.vue';
 import ReactiveComp from './components/reactive.vue';
 import ToRefComp from './components/toref.vue';
-import LifeCycle from "./components/life-cycle.vue"
+import LifeCycle from "./components/life-cycle.vue";
+import WatchEffectComp from "./components/watchEffect.vue";
 export default defineComponent({
   name: 'App',
   components: {
     RefComputed,
     ReactiveComp,
     ToRefComp,
-    LifeCycle
+    LifeCycle,
+    WatchEffectComp
   }
 });
 </script>
