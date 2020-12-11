@@ -1,6 +1,7 @@
 <template>
     <div class="validate-input-container pb-3">
-        <input type="text" 
+        <input 
+            v-bind = "$attrs"
             class = "form-control" 
             :value = "inputRef.val" 
             :class = "{'is-invalid':inputRef.error}"
@@ -21,11 +22,13 @@ const emailReg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
 export type RulesProp = RuleProp[];
 export default defineComponent({
     name:"ValidateInput",
+    inheritAttrs: false,
     props:{
         rules:Array as PropType<RulesProp>,
         modelValue:String,
     },
     setup(props,context){
+        console.log("attrs:",context.attrs)
         const inputRef = reactive({
             val:props.modelValue || "",
             error:false,
