@@ -1,7 +1,22 @@
 <template>
   <div class="container">
     <global-header :user="user"></global-header>
-    <column-list :list="list"></column-list>
+    <!-- <column-list :list="list"></column-list> -->
+    <form>
+      <div class="mb-3">
+        <label for="" class="form-label">邮箱地址</label>
+        <validate-input :rules = "emailRules"></validate-input>
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="exampleInputPassword1"
+        />
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
   </div>
 </template>
 
@@ -9,6 +24,7 @@
 import { defineComponent } from "vue";
 import ColumnList, { ColumnProps } from "./components/ColumnList.vue";
 import GlobalHeader, { UserProps } from "./components/GlobalHeader.vue";
+import ValidateInput,{RulesProp} from "./components/ValidateInput.vue"
 import "bootstrap/dist/css/bootstrap.min.css";
 const testData: ColumnProps[] = [
   {
@@ -42,25 +58,24 @@ const currentUser: UserProps = {
 export default defineComponent({
   name: "App",
   components: {
-    ColumnList,
+    // ColumnList,
     GlobalHeader,
+    ValidateInput
   },
   setup() {
+    const emailRules: RulesProp = [
+      {type:"required",message:"邮箱地址不能为空"},
+      {type:"email",message:"请输入正确的邮箱地址"},
+    ]
     return {
       list: testData,
       user: currentUser,
+      emailRules
     };
   },
 });
 </script>
 
 <style lang="less">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
