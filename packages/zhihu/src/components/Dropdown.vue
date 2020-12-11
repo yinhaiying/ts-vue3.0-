@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown" ref = "dropdownRef">
+  <div class="dropdown" ref="dropdownRef">
     <a
       href="#"
       class="btn btn-outline-light my-2 dropdown-toggle"
@@ -12,9 +12,9 @@
   </div>
 </template>
 
-<script lang = "ts">
-import { defineComponent, ref ,onMounted,onUnmounted} from "vue";
-
+<script lang="ts">
+import { defineComponent, ref, onMounted, onUnmounted, watch } from "vue";
+import useClickOutside from "../hooks/useClickOutside";
 export default defineComponent({
   name: "Dropdown",
   props: {
@@ -29,28 +29,19 @@ export default defineComponent({
       isOpen.value = !isOpen.value;
     };
     const dropdownRef = ref<null | HTMLElement>(null);
-    const handler = (e: MouseEvent) => {
-      if(dropdownRef.value){
-        if(!dropdownRef.value.contains(e.target as HTMLElement) && isOpen.value){
-          isOpen.value = false;
-        }
+    const isClickOutside = useClickOutside(dropdownRef);
+    watch(isClickOutside, () => {
+      if (isClickOutside.value && isOpen.value) {
+        isOpen.value = false;
       }
-    }
-    onMounted(() => {
-      document.addEventListener('click',handler)
-    })
-    onUnmounted(() => {
-      document.removeEventListener("click",handler)
-    })
-
+    });
     return {
       isOpen,
       toggleOpen,
-      dropdownRef
+      dropdownRef,
     };
   },
 });
 </script>
 
-<style>
-</style>
+<style></style>
