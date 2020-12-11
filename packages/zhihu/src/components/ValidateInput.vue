@@ -13,10 +13,12 @@
 
 
 <script lang = "ts">
-import {defineComponent,PropType,reactive} from "vue";
+import {defineComponent,PropType,reactive,onMounted} from "vue";
+import {emitter} from "./ValidateForm.vue";
 export interface RuleProp {
   type: "required" | "email" | "length" | "range";
   message: string;
+  length?: number;
 }
 const emailReg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
 export type RulesProp = RuleProp[];
@@ -28,7 +30,6 @@ export default defineComponent({
         modelValue:String,
     },
     setup(props,context){
-        console.log("attrs:",context.attrs)
         const inputRef = reactive({
             val:props.modelValue || "",
             error:false,
@@ -46,20 +47,32 @@ export default defineComponent({
                         case "email":
                             passed = emailReg.test(inputRef.val);
                             break;
+                        case "length":
+                            if(rule.length){
+                                passed = inputRef.val.trim().length <= rule.length;
+                            }
+                            break;
+
                         default :
                         break;
                     }
                     return passed;
                 });
                 inputRef.error = !allPassed;
+                return allPassed;
             }
+            return true;
         };
+        
         // 双向绑定的方法
         const updateValue = (e: KeyboardEvent) => {
           const targetValue = (e.target as HTMLInputElement).value;
           inputRef.val = targetValue;
           context.emit("update:modelValue",targetValue);
         }
+        onMounted(() => {
+            emitter.emit("form-item-created",inputRef.val)
+        })
         return {
           inputRef,
           validateInput,

@@ -5,15 +5,11 @@
     <validate-form @form-submit = "onFormSubmit">
       <div class="mb-3">
         <label for="" class="form-label">邮箱地址</label>
-        <validate-input :rules = "emailRules" v-model = "emailVal" hello ="hi" placeholder="请输入邮箱" type = "password"></validate-input>
+        <validate-input ref = "inputRef" :rules = "emailRules" v-model = "emailVal"  placeholder="请输入邮箱" type = "password"></validate-input>
       </div>
       <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input
-          type="password"
-          class="form-control"
-          id="exampleInputPassword1"
-        />
+        <label for="" class="form-label">密码</label>
+        <validate-input  :rules = "passwordRules" v-model = "passwordVal"  type = "password"></validate-input>
       </div>
       <template v-slot:submit>
         <button type="submit" class="btn btn-primary">Submit</button>
@@ -72,16 +68,25 @@ export default defineComponent({
       {type:"required",message:"邮箱地址不能为空"},
       {type:"email",message:"请输入正确的邮箱地址"},
     ]
-    const emailVal = ref("");
-    const onFormSubmit = (result: boolean) => {
-      console.log("提交的结果:",result)
+    const passwordRules: RulesProp = [
+      {type:"length",message:"密码长度不能超过6位",length:6},
+    ]
+    const emailVal = ref("792@qq.com");
+    const passwordVal = ref("123")
+    const inputRef = ref();
+    const onFormSubmit = () => {
+      console.log("提交的结果：");
+      console.log(inputRef.value.validateInput())
     }
     return {
       list: testData,
       user: currentUser,
       emailRules,
       emailVal,
-      onFormSubmit
+      passwordRules,
+      passwordVal,
+      onFormSubmit,
+      inputRef  // 用于拿到子组件
     };
   },
 });
