@@ -11,7 +11,7 @@
     </ul>
     <ul v-else class="list-inline mb-0">
       <li class="list-inline-item">
-        <a href="#" class="btn btn-outline-light my-2">你好，{{ user.name }}</a>
+        <dropdown :title="`你好，${user.name}`"></dropdown>
       </li>
     </ul>
   </nav>
@@ -19,6 +19,7 @@
 
 <script lang = "ts">
 import { defineComponent, PropType } from "vue";
+import Dropdown from "./Dropdown.vue";
 export interface UserProps {
   isLogin: boolean;
   name?: string;
@@ -31,6 +32,9 @@ export default defineComponent({
       type: Object as PropType<UserProps>,
       required: true,
     },
+  },
+  components: {
+    Dropdown,
   },
 });
 </script>
