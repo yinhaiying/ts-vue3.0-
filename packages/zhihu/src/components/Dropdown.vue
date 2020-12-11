@@ -7,8 +7,7 @@
       >{{ title }}</a
     >
     <div class="dropdown-menu" style="display: block" v-if="isOpen">
-      <a class="dropdown-item" href="#">新建文章</a>
-      <a class="dropdown-item" href="#">编辑资料</a>
+      <slot></slot>
     </div>
   </div>
 </template>
