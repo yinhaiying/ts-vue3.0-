@@ -14,7 +14,6 @@
       <template v-slot:submit>
         <button type="submit" class="btn btn-primary">Submit</button>
       </template>
-      
     </validate-form>
   </div>
 </template>
@@ -69,14 +68,15 @@ export default defineComponent({
       {type:"email",message:"请输入正确的邮箱地址"},
     ]
     const passwordRules: RulesProp = [
+      {type:"required",message:"密码长度不能为空"},
       {type:"length",message:"密码长度不能超过6位",length:6},
     ]
     const emailVal = ref("792@qq.com");
     const passwordVal = ref("123")
     const inputRef = ref();
-    const onFormSubmit = () => {
+    const onFormSubmit = (result: boolean) => {
       console.log("提交的结果：");
-      console.log(inputRef.value.validateInput())
+      console.log(result)
     }
     return {
       list: testData,

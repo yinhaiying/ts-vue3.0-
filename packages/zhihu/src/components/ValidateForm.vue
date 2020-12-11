@@ -13,19 +13,24 @@
 import { defineComponent, onUnmounted } from "vue";
 import mitt,{Emitter,Handler} from "mitt";
 export const emitter: Emitter = mitt();
+type ValidateFunc = () => boolean;
 export default defineComponent({
   name: "ValidateForm",
   emits: ["form-submit"],
   setup(props, context) {
-    const callback: Handler = (test: string) => {
-      console.log("测试信息:", test);
+    let funcArr: ValidateFunc[]  = [];
+    const callback: Handler = (func: ValidateFunc) => {
+      funcArr.push(func);
     };
     emitter.on("form-item-created", callback);
     onUnmounted(() => {
       emitter.off("form-item-created", callback);
+      funcArr = [];
     });
     const submitForm = () => {
-      context.emit("form-submit", true);
+      const result = funcArr.map(func => func()).every(bool => bool);
+      console.log("result111:",result);
+      context.emit("form-submit", result);
     };
     return {
       submitForm,

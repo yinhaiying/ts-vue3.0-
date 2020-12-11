@@ -1,5 +1,5 @@
 <template>
-    <div class="validate-input-container pb-3">
+    <div class="validate-input-container pb-3 input-wrapper">
         <input 
             v-bind = "$attrs"
             class = "form-control" 
@@ -71,7 +71,7 @@ export default defineComponent({
           context.emit("update:modelValue",targetValue);
         }
         onMounted(() => {
-            emitter.emit("form-item-created",inputRef.val)
+            emitter.emit("form-item-created",validateInput)
         })
         return {
           inputRef,
@@ -81,3 +81,12 @@ export default defineComponent({
     }
 })
 </script>
+
+<style lang="less" scoped>
+    .input-wrapper{
+        position:relative;
+        .invalid-feedback{
+            position:absolute;
+        }
+    }
+</style>
