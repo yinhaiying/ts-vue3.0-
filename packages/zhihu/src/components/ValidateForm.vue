@@ -11,14 +11,14 @@
 
 <script lang="ts">
 import { defineComponent, onUnmounted } from "vue";
-import mitt,{Emitter,Handler} from "mitt";
+import mitt, { Emitter, Handler } from "mitt";
 export const emitter: Emitter = mitt();
 type ValidateFunc = () => boolean;
 export default defineComponent({
   name: "ValidateForm",
   emits: ["form-submit"],
   setup(props, context) {
-    let funcArr: ValidateFunc[]  = [];
+    let funcArr: ValidateFunc[] = [];
     const callback: Handler = (func: ValidateFunc) => {
       funcArr.push(func);
     };
@@ -28,14 +28,14 @@ export default defineComponent({
       funcArr = [];
     });
     const submitForm = () => {
-      const result = funcArr.map(func => func()).every(bool => bool);
-      console.log("result111:",result);
+      const result = funcArr.map((func) => func()).every((bool) => bool);
+      console.log("result111:", result);
       context.emit("form-submit", result);
     };
     return {
       submitForm,
     };
-  }
+  },
 });
 </script>
 <style lang="less" scoped></style>
