@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
-
+import ColumnDetail from "../views/ColumnDetail.vue"
 const routerHistory = createWebHistory()
 const router = createRouter({
   history: routerHistory,
@@ -16,6 +16,11 @@ const router = createRouter({
       name: 'login',
       component: Login,
       meta: { redirectAlreadyLogin: true }
+    },
+    {
+      path: '/column/:id',
+      name: 'column',
+      component: ColumnDetail
     }
   ]
 })
