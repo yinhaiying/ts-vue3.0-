@@ -20,11 +20,12 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from "vue";
+<script lang = "ts">
+import { defineComponent, computed } from "vue";
 import { useRoute } from "vue-router";
-import { testData, testPosts } from "../testData";
 import PostList from "../components/PostList.vue";
+import { useStore } from "vuex";
+import { GlobalDataProps } from "../store/index";
 export default defineComponent({
   name: "ColumnDetail",
   components: {
@@ -33,8 +34,15 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const currentId = +route.params.id;
-    const column = testData.find((c) => c.id === currentId); // 根据id找到某一个专栏
-    const list = testPosts.filter((post) => post.columnId === currentId);
+    const store = useStore<GlobalDataProps>();
+    const column = computed(() => {
+      const posts = store.state.columns;
+      return posts.find((c) => c.id === currentId);
+    });
+    const list = computed(() => {
+      const posts = store.state.posts;
+      return posts.filter((post) => post.columnId === currentId);
+    });
     return {
       column,
       list,
