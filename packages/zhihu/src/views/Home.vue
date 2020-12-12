@@ -17,7 +17,6 @@ export default defineComponent({
   },
   setup() {
     const store = useStore<GlobalDataProps>();
-    console.log("store111:", store.state);
     const list = computed(() => store.state.columns);
     return {
       list: list,
