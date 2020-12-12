@@ -36,12 +36,10 @@ export default defineComponent({
     const currentId = +route.params.id;
     const store = useStore<GlobalDataProps>();
     const column = computed(() => {
-      const posts = store.state.columns;
-      return posts.find((c) => c.id === currentId);
+      return store.getters.getColumnById(currentId);
     });
     const list = computed(() => {
-      const posts = store.state.posts;
-      return posts.filter((post) => post.columnId === currentId);
+      return store.getters.getPostByCid(currentId);
     });
     return {
       column,
