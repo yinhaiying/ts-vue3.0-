@@ -15,8 +15,7 @@
         <label for="" class="form-label">文章详情</label>
         <validate-input
           :rules="contentRules"
-          v-model="ContentVal"
-          type="text"
+          v-model="contentVal"
           tag = "textarea"
           rows = "5"
         ></validate-input>
