@@ -56,7 +56,6 @@ const store = createStore<GlobalDataProps>({
   },
   actions:{
     fetchColumns(context){
-      console.log("这里没有会自行吗")
       axios.get("http://api.vikingship.xyz/api/columns").then((res) => {
         context.commit("fetchColumns",res.data);
       })
