@@ -69,7 +69,7 @@ export default defineComponent({
         }
       }
     };
-    const handleFileChange =  (e:Event) => {
+    const handleFileChange =  (e: Event) => {
       const target = e.target as HTMLInputElement;
       const files = target.files;
       if(files){
@@ -81,7 +81,7 @@ export default defineComponent({
           headers:{
             "Content-Type":"multipart/form-data"
           }
-        }).then((res:any) => {
+        }).then((res) => {
           console.log("文件上传：",res);
         })
       }

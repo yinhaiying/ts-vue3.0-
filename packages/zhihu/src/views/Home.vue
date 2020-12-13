@@ -1,5 +1,6 @@
 <template>
   <div class="page">
+    <Uploader action = "http://api.vikingship.xyz/api/upload" />
     <column-list :list="list"></column-list>
   </div>
 </template>
@@ -9,11 +10,12 @@ import { defineComponent, computed,onMounted } from "vue";
 import ColumnList from "../components/ColumnList.vue";
 import { useStore } from "vuex";
 import { GlobalDataProps } from "../store/index";
-
+import Uploader from "../components/Uploader.vue";
 export default defineComponent({
   name: "Home",
   components: {
     ColumnList,
+    Uploader
   },
   setup() {
     const store = useStore<GlobalDataProps>();
