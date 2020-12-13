@@ -2,12 +2,23 @@
     <div class="validate-input-container pb-3 input-wrapper">
         <input 
             v-bind = "$attrs"
+            v-if = "tag !=='textarea'"
             class = "form-control" 
             :value = "inputRef.val" 
             :class = "{'is-invalid':inputRef.error}"
             @input = "updateValue"
-            @blur = "validateInput">
-            <span v-if = "inputRef.error" class = "invalid-feedback">{{inputRef.message}}</span>
+            @blur = "validateInput"
+        />
+        <textarea
+            v-else
+            v-bind = "$attrs"
+            class = "form-control" 
+            :value = "inputRef.val" 
+            :class = "{'is-invalid':inputRef.error}"
+            @input = "updateValue"
+            @blur = "validateInput"
+        ></textarea>
+        <span v-if = "inputRef.error" class = "invalid-feedback">{{inputRef.message}}</span>
     </div>
 </template>
 
@@ -22,12 +33,17 @@ export interface RuleProp {
 }
 const emailReg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
 export type RulesProp = RuleProp[];
+export type TagType = "input" | "textarea";
 export default defineComponent({
     name:"ValidateInput",
     inheritAttrs: false,
     props:{
         rules:Array as PropType<RulesProp>,
         modelValue:String,
+        tag:{
+            type:String as PropType<TagType>,
+            default:"input"
+        }
     },
     setup(props,context){
         const inputRef = reactive({

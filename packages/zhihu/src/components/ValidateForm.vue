@@ -29,7 +29,6 @@ export default defineComponent({
     });
     const submitForm = () => {
       const result = funcArr.map((func) => func()).every((bool) => bool);
-      console.log("result111:", result);
       context.emit("form-submit", result);
     };
     return {

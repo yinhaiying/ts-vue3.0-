@@ -3,20 +3,12 @@
     <div v-for="item in columnList" :key="item.id" class="col-4 mb-3">
       <div class="card shadow-sm h-100" style="width: 18rem">
         <div class="card-body text-center">
-          <img
-            :src="item.avatar"
-            class="rounded-circle border border-light w-25 my-3"
-            :alt="item.title"
-          />
+          <img :src="item.avatar" class="rounded-circle border border-light w-25 my-3" :alt="item.title"/>
           <h5 class="card-title">{{ item.title }}</h5>
           <p class="card-text text-left">
             {{ item.description }}
           </p>
-          <router-link
-            :to="{ name: 'column', params: { id: item.id } }"
-            class="btn btn-outline-primary"
-            >进入专栏</router-link
-          >
+          <router-link :to="{ name: 'column', params: { id: item.id } }" class="btn btn-outline-primary">进入专栏</router-link>
         </div>
       </div>
     </div>
