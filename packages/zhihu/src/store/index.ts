@@ -25,7 +25,7 @@ const store = createStore<GlobalDataProps>({
     columns: testData,
     posts: testPosts,
     user: {
-      isLogin: false,
+      isLogin: true,
       name:"海英",
       columnId:1
     }

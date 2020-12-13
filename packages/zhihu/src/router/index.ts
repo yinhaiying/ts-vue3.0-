@@ -27,16 +27,27 @@ const router = createRouter({
     {
       path: '/create_post',
       name: 'createPost',
-      component: CreatePost
+      component: CreatePost,
+      meta:{
+        requiredLogin:true
+      }
     }
   ]
 })
 
-
+/* 
+不同页面具有不同的规则：
+1. 首页，文章详情页所有用户都可以访问
+2. 登录页面。如果处于登录状态则重定向到首页
+3. 发布文章页面必须是登录状态
+*/
 
 router.beforeEach((to,from,next) => {
-  if (to.name !== 'login' && !store.state.user.isLogin){
-    next({name:"login"})
+  console.log("to.meta:",to)
+  if(to.meta.requiredLogin && !store.state.user.isLogin){
+    next({name:"login"});
+  } else if (to.meta.redirectAlreadyLogin && store.state.user.isLogin){
+    next({name:"home"})
   }else{
     next();
   }
