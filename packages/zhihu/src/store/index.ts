@@ -1,5 +1,6 @@
 import { createStore } from "vuex";
 import { testData, testPosts, ColumnProps } from "../testData";
+import axios from "axios";
 interface UserProps {
   isLogin: boolean;
   name?: string;
@@ -48,6 +49,17 @@ const store = createStore<GlobalDataProps>({
     },
     getPostByCid: (state) => (cId: number) => {
       return state.posts.filter((post) => post.columnId === cId);
+    },
+    fetchColumns(state,rawData){
+      state.columns = rawData.data.list;
+    }
+  },
+  actions:{
+    fetchColumns(context){
+      console.log("这里没有会自行吗")
+      axios.get("http://api.vikingship.xyz/api/columns").then((res) => {
+        context.commit("fetchColumns",res.data);
+      })
     }
   }
 })

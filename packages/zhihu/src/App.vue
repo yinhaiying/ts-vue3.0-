@@ -12,7 +12,6 @@ import GlobalHeader from "./components/GlobalHeader.vue";
 import GlobalFooter from "./components/GlobalFooter.vue";
 import { useStore } from "vuex";
 import "bootstrap/dist/css/bootstrap.min.css";
-
 export default defineComponent({
   name: "App",
   components: {
