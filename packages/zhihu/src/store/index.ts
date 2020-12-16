@@ -28,8 +28,6 @@ const store = createStore<GlobalDataProps>({
     posts: testPosts,
     user: {
       isLogin: false,
-      name:"海英",
-      columnId:1
     },
     token: ""
   },
@@ -80,6 +78,12 @@ const store = createStore<GlobalDataProps>({
       .then((res) => {
         context.commit("getCurrentUser",res.data);
         return res.data;
+      })
+    },
+    //如果在页面中需要嵌套多个dispatch。那么可以在action进行定义。将其合并成一个。
+    loginAndFetch({dispatch},loginData){
+      return dispatch("login",loginData).then(() => {
+        return dispatch("getCurrentUser");
       })
     }
   }
