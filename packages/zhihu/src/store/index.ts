@@ -33,14 +33,6 @@ const store = createStore<GlobalDataProps>({
     },
     token: ""
   },
-  mutations: {
-    login(state) {
-      state.user = { ...state.user, isLogin: true, name: "海鹰" }
-    },
-    createPost(state,payload){
-      state.posts.push(payload);
-    }
-  },
   getters: {
     biggerColumnLength(state) {
       return state.columns.filter((c) => c.id > 2).length;
@@ -55,8 +47,19 @@ const store = createStore<GlobalDataProps>({
     fetchColumns(state,rawData){
       state.columns = rawData.data.list;
     },
-    login(state,rowData){
+
+  },
+  mutations: {
+    createPost(state, payload) {
+      state.posts.push(payload);
+    },
+    login(state, rowData) {
+      console.log("rowData:", rowData)
       state.token = rowData.data.token;
+      axios.defaults.headers.common["Authorization"] = rowData.data.token;
+    },
+    getCurrentUser(state,rowData){
+      state.user ={...state.user,isLogin:true,name:rowData.data.username}
     }
   },
   actions:{
@@ -69,6 +72,13 @@ const store = createStore<GlobalDataProps>({
       return axios.post("https://common-login-api.herokuapp.com/api/users/login",params)
       .then((res) => {
         context.commit("login",res.data);
+        return res.data;
+      })
+    },
+    getCurrentUser(context){
+      return axios.get("https://common-login-api.herokuapp.com/api/users/getUserInfo")
+      .then((res) => {
+        context.commit("getCurrentUser",res.data);
         return res.data;
       })
     }

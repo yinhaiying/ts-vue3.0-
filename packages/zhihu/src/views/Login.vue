@@ -72,8 +72,10 @@ export default defineComponent({
           password:passwordVal.value
         }
         store.dispatch("login",params).then((res) => {
-          console.log("登录数据：",res)
-          router.push("/")
+          store.dispatch('getCurrentUser').then((response) => {
+            console.log("获取用户信息：",response)
+          })
+          // router.push("/")
         })
       }
     };
