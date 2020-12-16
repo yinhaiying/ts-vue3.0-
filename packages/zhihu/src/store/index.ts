@@ -20,16 +20,18 @@ export interface GlobalDataProps {
   columns: ColumnProps[];
   posts: PostProps[];
   user: UserProps;
+  token: string;
 }
 const store = createStore<GlobalDataProps>({
   state: {
     columns: testData,
     posts: testPosts,
     user: {
-      isLogin: true,
+      isLogin: false,
       name:"海英",
       columnId:1
-    }
+    },
+    token: ""
   },
   mutations: {
     login(state) {
@@ -52,12 +54,22 @@ const store = createStore<GlobalDataProps>({
     },
     fetchColumns(state,rawData){
       state.columns = rawData.data.list;
+    },
+    login(state,rowData){
+      state.token = rowData.data.token;
     }
   },
   actions:{
     fetchColumns(context){
       axios.get("http://api.vikingship.xyz/api/columns").then((res) => {
         context.commit("fetchColumns",res.data);
+      })
+    },
+    login(context,params){
+      return axios.post("https://common-login-api.herokuapp.com/api/users/login",params)
+      .then((res) => {
+        context.commit("login",res.data);
+        return res.data;
       })
     }
   }

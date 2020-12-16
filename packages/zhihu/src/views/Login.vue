@@ -2,15 +2,24 @@
   <div class="page">
     <validate-form @form-submit="onFormSubmit">
       <div class="mb-3">
+        <label for="" class="form-label">用户名</label>
+        <validate-input
+          :rules="usernameRules"
+          v-model="usernameVal"
+          placeholder="请输入邮箱"
+          type="text"
+        ></validate-input>
+      </div>
+      <!-- <div class="mb-3">
         <label for="" class="form-label">邮箱地址</label>
         <validate-input
           ref="inputRef"
           :rules="emailRules"
           v-model="emailVal"
           placeholder="请输入邮箱"
-          type="password"
+          type="text"
         ></validate-input>
-      </div>
+      </div> -->
       <div class="mb-3">
         <label for="" class="form-label">密码</label>
         <validate-input
@@ -20,7 +29,7 @@
         ></validate-input>
       </div>
       <template v-slot:submit>
-        <button type="submit" class="btn btn-primary">注册</button>
+        <button type="submit" class="btn btn-primary">登录</button>
       </template>
     </validate-form>
   </div>
@@ -42,27 +51,39 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const store = useStore<GlobalDataProps>();
-    const emailRules: RulesProp = [
-      { type: "required", message: "邮箱地址不能为空" },
-      { type: "email", message: "请输入正确的邮箱地址" },
-    ];
+    const usernameRules: RulesProp = [
+      { type: "required", message: "用户名不能为空" },
+    ]
+    // const emailRules: RulesProp = [
+    //   { type: "required", message: "邮箱地址不能为空" },
+    //   { type: "email", message: "请输入正确的邮箱地址" },
+    // ];
     const passwordRules: RulesProp = [
       { type: "required", message: "密码长度不能为空" },
       { type: "length", message: "密码长度不能超过6位", length: 6 },
     ];
-    const emailVal = ref("");
+    const usernameVal = ref("");
+    // const emailVal = ref("");
     const passwordVal = ref("");
     const onFormSubmit = (result: boolean) => {
       if (result) {
-        router.push({ name: "home" });
-        store.commit("login");
+        const params = {
+          username:usernameVal.value,
+          password:passwordVal.value
+        }
+        store.dispatch("login",params).then((res) => {
+          console.log("登录数据：",res)
+          router.push("/")
+        })
       }
     };
     return {
-      emailRules,
-      emailVal,
+      // emailRules,
+      // emailVal,
       passwordRules,
       passwordVal,
+      usernameRules,
+      usernameVal,
       onFormSubmit,
     };
   },
