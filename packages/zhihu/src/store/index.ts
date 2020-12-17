@@ -29,7 +29,7 @@ const store = createStore<GlobalDataProps>({
     user: {
       isLogin: false,
     },
-    token: ""
+    token: localStorage.getItem("token") || ""
   },
   getters: {
     biggerColumnLength(state) {
@@ -54,6 +54,7 @@ const store = createStore<GlobalDataProps>({
     login(state, rowData) {
       console.log("rowData:", rowData)
       state.token = rowData.data.token;
+      localStorage.setItem("token",state.token)
       axios.defaults.headers.common["Authorization"] = rowData.data.token;
     },
     getCurrentUser(state,rowData){
