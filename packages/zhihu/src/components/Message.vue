@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { defineComponent,PropType,onUnmounted,ref } from "vue";
-
+import useDOMCreate from "../hooks/useDOMCreate"
 export type MessageType = "success" | "error" | "default";
 export default defineComponent({
   name:"Message",
@@ -22,11 +22,9 @@ export default defineComponent({
   },
   emit:["close-message"],
   setup(props,context){
-      const node = document.createElement("div");
-      node.id = "message";
-      document.body.appendChild(node);
+      useDOMCreate("message");
 
-      const isVisible = ref(true);
+      const isVisible = ref(false);
       const classObject = {
           "alert-success":props.type === "success",
           "alert-danger":props.type === "error",
@@ -37,9 +35,7 @@ export default defineComponent({
           isVisible.value = false;
           context.emit("close-message",true)
       }
-      onUnmounted(()=> {
-          document.body.removeChild(node);
-      });
+
       return {
           isVisible,
           classObject,
