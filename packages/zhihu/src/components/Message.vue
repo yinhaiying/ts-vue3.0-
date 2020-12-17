@@ -1,0 +1,51 @@
+<template>
+  <teleport to="#message">
+    <div v-if = "isVisible" :class = "classObject" class="alert message-info fixed-top w-50 mx-auto d-flex justify-content-between mt-2" role="alert">
+      <span>{{message}}</span> 
+      <button type="button" class="btn-close" @click.prevent = "hide"></button>
+    </div>
+  </teleport>
+</template>
+
+<script lang="ts">
+import { defineComponent,PropType,onUnmounted,ref } from "vue";
+
+export type MessageType = "success" | "error" | "default";
+export default defineComponent({
+  name:"Message",
+  props:{
+      message:String,
+      type:{
+          type:String as PropType<MessageType>,
+          default:"default"
+      }
+  },
+  emit:["close-message"],
+  setup(props,context){
+      const node = document.createElement("div");
+      node.id = "message";
+      document.body.appendChild(node);
+
+      const isVisible = ref(true);
+      const classObject = {
+          "alert-success":props.type === "success",
+          "alert-danger":props.type === "error",
+          "alert-primary":props.type === "default",
+      }
+
+      const hide = () => {
+          isVisible.value = false;
+          context.emit("close-message",true)
+      }
+      onUnmounted(()=> {
+          document.body.removeChild(node);
+      });
+      return {
+          isVisible,
+          classObject,
+          hide
+      }
+  }
+});
+</script>
+<style lang="less" scoped></style>

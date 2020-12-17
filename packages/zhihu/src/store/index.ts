@@ -21,12 +21,12 @@ export interface GlobalDataProps {
   posts: PostProps[];
   user: UserProps;
   token: string;
-  error:GlobalErrorProps
+  error: GlobalErrorProps;
 }
 
 export interface GlobalErrorProps{
-  status:boolean;
-  message?:string;
+  status: boolean;
+  message?: string;
 }
 
 
@@ -71,7 +71,7 @@ const store = createStore<GlobalDataProps>({
     getCurrentUser(state,rowData){
       state.user ={...state.user,isLogin:true,name:rowData.data.username}
     },
-    setError(state,e:GlobalErrorProps){
+    setError(state,e: GlobalErrorProps){
       state.error = e;
     }
   },

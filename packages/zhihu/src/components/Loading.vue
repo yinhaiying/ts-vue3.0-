@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent,onMounted } from "vue";
+import { defineComponent,onUnmounted } from "vue";
 export default defineComponent({
   name: "Loading",
   props:{
@@ -30,7 +30,7 @@ export default defineComponent({
       const node = document.createElement("div");
       node.id = "loading";
       document.body.appendChild(node);
-      onMounted(()=> {
+      onUnmounted(()=> {
           document.body.removeChild(node);
       })
   }
