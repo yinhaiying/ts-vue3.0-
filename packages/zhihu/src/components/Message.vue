@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent,PropType,onUnmounted,ref } from "vue";
+import { defineComponent,PropType,ref } from "vue";
 import useDOMCreate from "../hooks/useDOMCreate"
 export type MessageType = "success" | "error" | "default";
 export default defineComponent({
@@ -24,7 +24,7 @@ export default defineComponent({
   setup(props,context){
       useDOMCreate("message");
 
-      const isVisible = ref(false);
+      const isVisible = ref(true);
       const classObject = {
           "alert-success":props.type === "success",
           "alert-danger":props.type === "error",

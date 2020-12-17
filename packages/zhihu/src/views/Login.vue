@@ -40,6 +40,7 @@ import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { GlobalDataProps } from "../store/index";
+import createMessage from "../components/createMessage"
 import ValidateForm from "../components/ValidateForm.vue";
 import ValidateInput,{RulesProp} from "../components/ValidateInput.vue";
 export default defineComponent({
@@ -72,8 +73,12 @@ export default defineComponent({
           password:passwordVal.value
         }
         store.dispatch('loginAndFetch', params).then((res) => {
-          console.log("登录：",res)
-          router.push("/")
+          console.log("res:",res)
+          if(res.code === 200){
+            createMessage("登录成功","success");
+            router.push("/");
+          }
+          
         }).catch((e) => {
           console.log(e);
         })

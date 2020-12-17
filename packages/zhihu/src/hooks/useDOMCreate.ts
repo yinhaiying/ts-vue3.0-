@@ -1,6 +1,6 @@
 
 import { onUnmounted} from "vue";
-const useDOMCreate = (id:string) => {
+const useDOMCreate = (id: string) => {
     const node = document.createElement("div");
     node.id = id;
     document.body.appendChild(node);
