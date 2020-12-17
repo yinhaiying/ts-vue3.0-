@@ -71,16 +71,11 @@ export default defineComponent({
           username:usernameVal.value,
           password:passwordVal.value
         }
-        // store.dispatch("login",params).then((res) => {
-          // store.dispatch('getCurrentUser').then((response) => {
-          //   console.log("获取用户信息：",response)
-          // })
-          
-          // router.push("/")
-        // })
         store.dispatch('loginAndFetch', params).then((res) => {
           console.log("登录：",res)
           router.push("/")
+        }).catch((e) => {
+          console.log(e);
         })
       }
     };
