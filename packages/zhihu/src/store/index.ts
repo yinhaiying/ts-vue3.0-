@@ -100,6 +100,12 @@ const store = createStore<GlobalDataProps>({
       return dispatch("login",loginData).then(() => {
         return dispatch("getCurrentUser");
       })
+    },
+    register(context,params){
+      return axios.post("https://common-login-api.herokuapp.com/api/users/register", params)
+      .then((res) => {
+        return res.data;
+      })
     }
   }
 })

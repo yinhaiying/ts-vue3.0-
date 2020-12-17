@@ -27,9 +27,10 @@
 import {defineComponent,PropType,reactive,onMounted} from "vue";
 import {emitter} from "./ValidateForm.vue";
 export interface RuleProp {
-  type: "required" | "email" | "length" | "range";
+  type: "required" | "email" | "length" | "range"|"custom";
   message: string;
   length?: number;
+  validator?: () => boolean;
 }
 const emailReg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
 export type RulesProp = RuleProp[];
@@ -68,7 +69,9 @@ export default defineComponent({
                                 passed = inputRef.val.trim().length <= rule.length;
                             }
                             break;
-
+                        case "custom":
+                            passed = rule.validator ? rule.validator() :true;
+                            break;
                         default :
                         break;
                     }
