@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed,onMounted } from "vue";
+import { defineComponent, computed } from "vue";
 import GlobalHeader from "./components/GlobalHeader.vue";
 import GlobalFooter from "./components/GlobalFooter.vue";
 // import Message from "./components/Message.vue";
@@ -18,7 +18,6 @@ import GlobalFooter from "./components/GlobalFooter.vue";
 import { useStore } from "vuex";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {GlobalDataProps} from "./store/index";
-import axios from "axios";
 export default defineComponent({
   name: "App",
   components: {
@@ -30,13 +29,6 @@ export default defineComponent({
   setup() {
     const store = useStore<GlobalDataProps>();
     const currentUser = computed(() => store.state.user);
-    const token = computed( () => store.state.token);
-    onMounted(() => {
-      if(token.value && !currentUser.value.isLogin){
-        axios.defaults.headers.common["Authorization"] = token.value;
-        store.dispatch('getCurrentUser');
-      }
-    })
     return {
       user: currentUser,
     };
