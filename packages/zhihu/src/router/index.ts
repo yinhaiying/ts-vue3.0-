@@ -50,13 +50,7 @@ const router = createRouter({
 */
 
 router.beforeEach((to,from,next) => {
-  // if(to.meta.requiredLogin && !store.state.user.isLogin){
-  //   next({name:"login"});
-  // } else if (to.meta.redirectAlreadyLogin && store.state.user.isLogin){
-  //   next({name:"home"})
-  // }else{
-  //   next();
-  // }
+  console.log("路由守卫:",to)
   const {user,token} = store.state;
   const { redirectAlreadyLogin, requiredLogin} = to.meta;
   if(!user.isLogin){
@@ -71,6 +65,7 @@ router.beforeEach((to,from,next) => {
       }).catch((e) => {
         console.log(e);
         localStorage.removeItem("token");
+        store.commit('logout');
         next("/login");
       })
     }else{
@@ -81,9 +76,12 @@ router.beforeEach((to,from,next) => {
       }
     }
   }else{
+    console.log("token不存在执行这里");
     if (redirectAlreadyLogin){
+      console.log("不跳转");
       next("/");
     }else{
+      console.log("直接跳转")
       next();
     }
   }
