@@ -76,12 +76,9 @@ router.beforeEach((to,from,next) => {
       }
     }
   }else{
-    console.log("token不存在执行这里");
     if (redirectAlreadyLogin){
-      console.log("不跳转");
       next("/");
     }else{
-      console.log("直接跳转")
       next();
     }
   }

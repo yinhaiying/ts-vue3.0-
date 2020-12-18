@@ -1,7 +1,25 @@
 <template>
   <div class="create-post-page">
-   <h4>新建文章</h4>
-   <input type="file" name = "file" @change.prevent = "handleFileChange">
+    <h4>新建文章</h4>
+    <Uploader
+      action="http://api.vikingship.xyz/api/upload"
+      :beforeUpload="beforeUpload"
+      @file-uploaded="onFileUploaded"
+      class="file-upload-wrapper d-flex align-items-center justify-content-center bg-light text-secondary w-100"
+    >
+      <h2>点击上传头图</h2>
+      <template #loading>
+        <div class="d-flex">
+          <h2>正在上传...</h2>
+        </div>
+      </template>
+      <template v-slot:uploaded="slotProps">
+        <div class="uploaded-area">
+          <img :src="slotProps.uploadedData.data.url" alt="" />
+          <h3>点击重新上传</h3>
+        </div>
+      </template>
+    </Uploader>
     <validate-form @form-submit="onFormSubmit">
       <div class="mb-3">
         <label for="" class="form-label">文章标题：</label>
@@ -9,7 +27,7 @@
           :rules="titleRules"
           v-model="titleVal"
           placeholder="请输入文章标题"
-          type = "text"
+          type="text"
         ></validate-input>
       </div>
       <div class="mb-3">
@@ -17,8 +35,8 @@
         <validate-input
           :rules="contentRules"
           v-model="contentVal"
-          tag = "textarea"
-          rows = "5"
+          tag="textarea"
+          rows="5"
         ></validate-input>
       </div>
       <template v-slot:submit>
@@ -28,19 +46,21 @@
   </div>
 </template>
 
-<script lang = "ts">
-import { defineComponent,ref} from "vue";
+<script lang="ts">
+import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import axios from "axios";
-import { GlobalDataProps,PostProps } from "../store/index";
+import { GlobalDataProps, PostProps } from "../store/index";
 import ValidateForm from "../components/ValidateForm.vue";
-import ValidateInput,{RulesProp} from "../components/ValidateInput.vue";
+import ValidateInput, { RulesProp } from "../components/ValidateInput.vue";
+import Uploader from "../components/Uploader.vue";
 export default defineComponent({
   name: "CreatePost",
   components: {
     ValidateForm,
     ValidateInput,
+    Uploader,
   },
   setup() {
     const router = useRouter();
@@ -55,47 +75,78 @@ export default defineComponent({
     const contentVal = ref("");
     const onFormSubmit = (valid: boolean) => {
       if (valid) {
-        const {columnId} = store.state.user;
-        if(columnId){
+        const { columnId } = store.state.user;
+        if (columnId) {
           const newPost: PostProps = {
-            id:Math.floor(Math.random()*1000),
-            title:titleVal.value,
-            content:contentVal.value,
+            id: Math.floor(Math.random() * 1000),
+            title: titleVal.value,
+            content: contentVal.value,
             columnId,
-            createdAt:new Date().toLocaleString()
-          }
-          store.commit("createPost",newPost);
-          router.push({name:"column",params:{id:columnId}});
+            createdAt: new Date().toLocaleString(),
+          };
+          store.commit("createPost", newPost);
+          router.push({ name: "column", params: { id: columnId } });
         }
       }
     };
-    const handleFileChange =  (e: Event) => {
+    const handleFileChange = (e: Event) => {
       const target = e.target as HTMLInputElement;
       const files = target.files;
-      if(files){
+      if (files) {
         const uploadedFile = files[0];
         // 使用formData进行传输
         const formData = new FormData();
-        formData.append(uploadedFile.name,uploadedFile);
-        axios.post("http://api.vikingship.xyz/api/upload",formData,{
-          headers:{
-            "Content-Type":"multipart/form-data"
-          }
-        }).then((res) => {
-          console.log("文件上传：",res);
-        })
+        formData.append(uploadedFile.name, uploadedFile);
+        axios
+          .post("http://api.vikingship.xyz/api/upload", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => {
+            console.log("文件上传：", res);
+          });
       }
-    }
+    };
     return {
       titleRules,
       contentRules,
       titleVal,
       contentVal,
       onFormSubmit,
-      handleFileChange
+      handleFileChange,
     };
   },
 });
 </script>
-<style lang="less" scoped>
+<style lang="less">
+.create-post-page {
+  .file-upload-wrapper {
+    height: 200px;
+    cursor: pointer;
+    .uploaded-area {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      &:hover {
+        h3 {
+          display: block;
+        }
+      }
+      h3 {
+        display: none;
+        position: absolute;
+        color: #999;
+        text-align: center;
+        width: 100%;
+        top: 50%;
+      }
+    }
+  }
+}
 </style>

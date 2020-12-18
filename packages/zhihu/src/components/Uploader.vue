@@ -1,6 +1,6 @@
 <template>
   <div class="file-upload">
-    <div class="file-upload-container" @click.prevent="triggerUpload">
+    <div class="file-upload-container" @click.prevent="triggerUpload" v-bind = "$attrs">
       <slot v-if="fileStatus === 'ready'" name = "default">
         <button class="btn btn-primary">点击上传</button>
       </slot>
@@ -29,6 +29,7 @@ import axios from "axios";
 type UploadStatus = "ready" | "loading" | "success" | "error";
 type CheckFunc = (file: File) => boolean;
 export default defineComponent({
+  inheritAttrs:false,
   props: {
     action: {
       type: String,
