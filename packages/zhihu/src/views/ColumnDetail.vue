@@ -46,7 +46,8 @@ export default defineComponent({
       return store.getters.getPostByCid(currentId);
     });
     onMounted(()=> {
-      store.dispatch('fetchColumns')
+      store.dispatch('fetchColumns');
+      store.dispatch('fetchPosts',currentId)
     })
     return {
       column,

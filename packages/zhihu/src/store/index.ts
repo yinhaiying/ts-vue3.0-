@@ -59,11 +59,12 @@ const store = createStore<GlobalDataProps>({
     // 如果需要传递参数，可以返回一个函数
     getColumnById: (state) => (id: number) => {
       return state.columns.find((c) => {
-        console.log("c:",c)
+        console.log("ccccc:",c)
         return c.columnId == id
       })
     },
     getPostByCid: (state) => (cId: number) => {
+      console.log("state.posts:",state.posts);
       return state.posts.filter((post) => post.columnId === cId);
     },
   },
@@ -90,16 +91,23 @@ const store = createStore<GlobalDataProps>({
       state.posts.push(payload);
     },
     fetchColumns(state,rowData){
-      console.log("获取columns:mutation",rowData)
       state.columns = rowData.data;
+    },
+    fetchPosts(state,rowData){
+      state.posts = rowData;
     }
   },
   actions:{
-    fetchColumns(context){
+    fetchColumns({commit}){
       return axios.get("/api/columns").then((res) => {
-        console.log("获取columns:",res)
-        context.commit("fetchColumns",res.data);
+        commit("fetchColumns",res.data)
         return res.data;
+      })
+    },
+    fetchPosts({commit},columnId){
+      return axios.get(`/api/columns/${columnId}/posts`).then((res) => {
+        commit("fetchPosts",res.data.data.list);
+        return res.data.data.list;
       })
     },
     login(context,params){
