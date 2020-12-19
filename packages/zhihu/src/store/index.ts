@@ -90,10 +90,13 @@ const store = createStore<GlobalDataProps>({
     createPost(state, payload) {
       state.posts.push(payload);
     },
+    fetchColumns(state,rowData){
+      state.columns = rowData.data;
+    }
   },
   actions:{
     fetchColumns(context){
-      axios.get("http://api.vikingship.xyz/api/columns").then((res) => {
+      return axios.get("/api/columns").then((res) => {
         context.commit("fetchColumns",res.data);
       })
     },

@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed,onMounted } from "vue";
 import GlobalHeader from "./components/GlobalHeader.vue";
 import GlobalFooter from "./components/GlobalFooter.vue";
 // import Message from "./components/Message.vue";
@@ -29,6 +29,7 @@ export default defineComponent({
   setup() {
     const store = useStore<GlobalDataProps>();
     const currentUser = computed(() => store.state.user);
+
     return {
       user: currentUser,
     };
