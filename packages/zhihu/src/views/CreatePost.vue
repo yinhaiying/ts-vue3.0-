@@ -77,17 +77,23 @@ export default defineComponent({
     const contentVal = ref("");
     const onFormSubmit = (valid: boolean) => {
       if (valid) {
-        const { columnId } = store.state.user;
-        if (columnId) {
+        const { username, columnId } = store.state.user;
+        if (columnId && username) {
           const newPost: PostProps = {
-            id: Math.floor(Math.random() * 1000),
+            // TODO:avatar
             title: titleVal.value,
             content: contentVal.value,
             columnId,
-            createdAt: new Date().toLocaleString(),
+            author: username,
           };
-          store.commit("createPost", newPost);
-          router.push({ name: "column", params: { id: columnId } });
+          store.dispatch("createPost", newPost).then((res) => {
+            if (res.code == 200) {
+              createMessage("创建成功", "success");
+              setTimeout(() => {
+                router.push({ name: "column", params: { id: columnId } });
+              },2000);
+            }
+          });
         }
       }
     };
@@ -111,12 +117,14 @@ export default defineComponent({
       }
     };
     const uploadCheck = (file: File) => {
-      const {passed,error} = beforeUploadCheck(file,{format:["image/jpeg","image/png"],size:1});
-      console.log("这里执行了吗",passed,error)
-      if(error === "format"){
-        createMessage("上传图片只能是jpg或者png格式","error");
-      }else if(error === "size"){
-        createMessage("图片大小不能超过1M","error");
+      const { passed, error } = beforeUploadCheck(file, {
+        format: ["image/jpeg", "image/png"],
+        size: 1,
+      });
+      if (error === "format") {
+        createMessage("上传图片只能是jpg或者png格式", "error");
+      } else if (error === "size") {
+        createMessage("图片大小不能超过1M", "error");
       }
       return passed;
     };
@@ -127,7 +135,7 @@ export default defineComponent({
       contentVal,
       onFormSubmit,
       handleFileChange,
-      uploadCheck
+      uploadCheck,
     };
   },
 });

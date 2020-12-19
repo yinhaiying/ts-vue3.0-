@@ -5,6 +5,7 @@ import router from './router'
 import store from "./store/index"
 
 import axios from "axios";
+axios.defaults.baseURL = "https://common-login-api.herokuapp.com";
 axios.interceptors.response.use(function (response) {
     // 对响应数据做点什么
     return response;

@@ -1,5 +1,6 @@
 <template>
   <div class="column-detail-page w-75 mx-auto">
+   1111 {{column}}
     <div
       class="column-info row mb-4 border-bottom pb-4 align-items-center"
       v-if="column"
@@ -44,6 +45,7 @@ export default defineComponent({
     return {
       column,
       list,
+      store
     };
   },
 });

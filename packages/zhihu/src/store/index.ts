@@ -1,19 +1,29 @@
 import { createStore } from "vuex";
-import { testData, testPosts, ColumnProps } from "../testData";
+import { testData } from "../testData";
 import axios from "axios";
-interface UserProps {
-  isLogin: boolean;
-  name?: string;
-  id?: number;
-  columnId?: number;   // 每个用户都有唯一的专栏id
-}
-export interface PostProps {
+export interface ColumnProps {
   id: number;
   title: string;
+  avatar?: string;
+  description: string;
+}
+interface UserProps {
+  isLogin: boolean;
+  username?: string;
+  id?: number;
+  columnId?: number;   // 每个用户都有唯一的专栏id
+  email?: string;
+  authorId?: string;
+  createdAt?: string;
+}
+export interface PostProps {
+  id?: number;
+  title: string;
   content: string;
-  image?: string;
-  createdAt: string;
+  avatar?: string;
+  createdAt?: string;
   columnId: number;
+  author: string;
 }
 
 export interface GlobalDataProps {
@@ -32,15 +42,15 @@ export interface GlobalErrorProps{
 
 const store = createStore<GlobalDataProps>({
   state: {
-    columns: testData,
-    posts: testPosts,
+    columns: [],
+    posts: [],
     user: {
       isLogin: false,
     },
     error:{
       status:false
     },
-    token: localStorage.getItem("token") || ""
+    token: localStorage.getItem("token") || "",
   },
   getters: {
     biggerColumnLength(state) {
@@ -48,6 +58,7 @@ const store = createStore<GlobalDataProps>({
     },
     // 如果需要传递参数，可以返回一个函数
     getColumnById: (state) => (id: number) => {
+      console.log("columnId:",id)
       return state.columns.find((c) => c.id === id)
     },
     getPostByCid: (state) => (cId: number) => {
@@ -56,12 +67,8 @@ const store = createStore<GlobalDataProps>({
     fetchColumns(state,rawData){
       state.columns = rawData.data.list;
     },
-
   },
   mutations: {
-    createPost(state, payload) {
-      state.posts.push(payload);
-    },
     login(state, rowData) {
       console.log("rowData:", rowData)
       state.token = rowData.data.token;
@@ -75,11 +82,14 @@ const store = createStore<GlobalDataProps>({
       delete axios.defaults.headers.common["Authorization"];
     },
     getCurrentUser(state,rowData){
-      state.user ={...state.user,isLogin:true,name:rowData.data.username}
+      state.user = Object.assign({},state.user,rowData.data,{isLogin:true});
     },
     setError(state,e: GlobalErrorProps){
       state.error = e;
-    }
+    },
+    createPost(state, payload) {
+      state.posts.push(payload);
+    },
   },
   actions:{
     fetchColumns(context){
@@ -110,6 +120,12 @@ const store = createStore<GlobalDataProps>({
     register(context,params){
       return axios.post("https://common-login-api.herokuapp.com/api/users/register", params)
       .then((res) => {
+        return res.data;
+      })
+    },
+    createPost({commit},params){
+      return axios.post("/api/posts/createPost",params).then((res) => {
+        commit("createPost", res.data);
         return res.data;
       })
     }
