@@ -8,7 +8,7 @@
           <p class="card-text text-left">
             {{ item.description }}
           </p>
-          <router-link :to="{ name: 'column', params: { id: item.id } }" class="btn btn-outline-primary">进入专栏</router-link>
+          <router-link :to="{ name: 'column', params: { id: item.columnId } }" class="btn btn-outline-primary">进入专栏</router-link>
         </div>
       </div>
     </div>
@@ -36,7 +36,7 @@ export default defineComponent({
     const columnList = computed(() => {
       return props.list.map((item) => {
         if (!item.avatar) {
-          item.avatar = require("@/assets/default_avatar.jpg");
+          item.avatar = "https://ftp.bmp.ovh/imgs/2020/12/5df5dc0ea4a2fd7f.jpg";
         }
         return item;
       });

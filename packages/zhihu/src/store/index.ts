@@ -2,7 +2,7 @@ import { createStore } from "vuex";
 import { testData } from "../testData";
 import axios from "axios";
 export interface ColumnProps {
-  id: number;
+  columnId: number;
   title: string;
   avatar?: string;
   description: string;
@@ -53,19 +53,18 @@ const store = createStore<GlobalDataProps>({
     token: localStorage.getItem("token") || "",
   },
   getters: {
-    biggerColumnLength(state) {
-      return state.columns.filter((c) => c.id > 2).length;
-    },
+    // biggerColumnLength(state) {
+    //   return state.columns.filter((c) => c. > 2).length;
+    // },
     // 如果需要传递参数，可以返回一个函数
     getColumnById: (state) => (id: number) => {
-      console.log("columnId:",id)
-      return state.columns.find((c) => c.id === id)
+      return state.columns.find((c) => {
+        console.log("c:",c)
+        return c.columnId == id
+      })
     },
     getPostByCid: (state) => (cId: number) => {
       return state.posts.filter((post) => post.columnId === cId);
-    },
-    fetchColumns(state,rawData){
-      state.columns = rawData.data.list;
     },
   },
   mutations: {
@@ -91,13 +90,16 @@ const store = createStore<GlobalDataProps>({
       state.posts.push(payload);
     },
     fetchColumns(state,rowData){
+      console.log("获取columns:mutation",rowData)
       state.columns = rowData.data;
     }
   },
   actions:{
     fetchColumns(context){
       return axios.get("/api/columns").then((res) => {
+        console.log("获取columns:",res)
         context.commit("fetchColumns",res.data);
+        return res.data;
       })
     },
     login(context,params){

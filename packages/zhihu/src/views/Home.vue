@@ -3,7 +3,6 @@
     <column-list :list="list"></column-list>
   </div>
 </template>
-
 <script lang = "ts">
 import { defineComponent, computed,onMounted } from "vue";
 import ColumnList from "../components/ColumnList.vue";

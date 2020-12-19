@@ -1,13 +1,12 @@
 <template>
   <div class="column-detail-page w-75 mx-auto">
-   1111 {{column}}
     <div
       class="column-info row mb-4 border-bottom pb-4 align-items-center"
       v-if="column"
     >
       <div class="col-3 text-center">
         <img
-          :src="column.avatar && column.avatar.fitUrl"
+          :src="column.avatar"
           :alt="column.title"
           class="rounded-circle border w-100"
         />
@@ -22,7 +21,7 @@
 </template>
 
 <script lang = "ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed,onMounted } from "vue";
 import { useRoute } from "vue-router";
 import PostList from "../components/PostList.vue";
 import { useStore } from "vuex";
@@ -34,18 +33,24 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute();
-    const currentId = +route.params.id;
+    const currentId = route.params.id;
     const store = useStore<GlobalDataProps>();
     const column = computed(() => {
-      return store.getters.getColumnById(currentId);
+      const item =  store.getters.getColumnById(currentId);
+      if(item && !item.avatar){
+        item.avatar = "https://ftp.bmp.ovh/imgs/2020/12/5df5dc0ea4a2fd7f.jpg";
+      }
+      return item;
     });
     const list = computed(() => {
       return store.getters.getPostByCid(currentId);
     });
+    onMounted(()=> {
+      store.dispatch('fetchColumns')
+    })
     return {
       column,
       list,
-      store
     };
   },
 });
