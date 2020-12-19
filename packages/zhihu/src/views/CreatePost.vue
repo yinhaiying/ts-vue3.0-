@@ -3,7 +3,7 @@
     <h4>新建文章</h4>
     <Uploader
       action="http://api.vikingship.xyz/api/upload"
-      :beforeUpload="beforeUpload"
+      :beforeUpload="uploadCheck"
       @file-uploaded="onFileUploaded"
       class="file-upload-wrapper d-flex align-items-center justify-content-center bg-light text-secondary w-100"
     >
@@ -55,6 +55,8 @@ import { GlobalDataProps, PostProps } from "../store/index";
 import ValidateForm from "../components/ValidateForm.vue";
 import ValidateInput, { RulesProp } from "../components/ValidateInput.vue";
 import Uploader from "../components/Uploader.vue";
+import { beforeUploadCheck } from "../utils/index";
+import createMessage from "../components/createMessage";
 export default defineComponent({
   name: "CreatePost",
   components: {
@@ -108,6 +110,16 @@ export default defineComponent({
           });
       }
     };
+    const uploadCheck = (file: File) => {
+      const {passed,error} = beforeUploadCheck(file,{format:["image/jpeg","image/png"],size:1});
+      console.log("这里执行了吗",passed,error)
+      if(error === "format"){
+        createMessage("上传图片只能是jpg或者png格式","error");
+      }else if(error === "size"){
+        createMessage("图片大小不能超过1M","error");
+      }
+      return passed;
+    };
     return {
       titleRules,
       contentRules,
@@ -115,6 +127,7 @@ export default defineComponent({
       contentVal,
       onFormSubmit,
       handleFileChange,
+      uploadCheck
     };
   },
 });
