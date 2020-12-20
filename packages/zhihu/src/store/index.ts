@@ -95,6 +95,9 @@ const store = createStore<GlobalDataProps>({
     },
     fetchPosts(state,rowData){
       state.posts = rowData;
+    },
+    createColumn(state,rowData){
+      state.columns.push(rowData.data);
     }
   },
   actions:{
@@ -139,6 +142,12 @@ const store = createStore<GlobalDataProps>({
     createPost({commit},params){
       return axios.post("/api/posts/createPost",params).then((res) => {
         commit("createPost", res.data);
+        return res.data;
+      })
+    },
+    createColumn({commit},params){
+      return axios.post("/api/columns/createColumn",params).then((res) => {
+        commit("createColumn",res.data);
         return res.data;
       })
     }

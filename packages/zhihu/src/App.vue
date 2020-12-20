@@ -3,7 +3,9 @@
     <global-header :user="user"></global-header>
     <!-- <loading text = "加载中"></loading> -->
     <!-- <message type = "error" message="这是一个报错信息"></message> -->
-    <router-view></router-view>
+    <div class="content">
+      <router-view></router-view>
+    </div>
     <global-footer></global-footer>
   </div>
 </template>
@@ -37,4 +39,10 @@ export default defineComponent({
 </script>
 
 <style lang="less">
+.container{
+  height:100vh;
+}
+.content{
+  height:calc(100% - 200px);
+}
 </style>
