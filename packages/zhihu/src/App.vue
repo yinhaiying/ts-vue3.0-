@@ -1,17 +1,19 @@
 <template>
-  <div class="container">
-    <global-header :user="user"></global-header>
-    <!-- <loading text = "加载中"></loading> -->
-    <!-- <message type = "error" message="这是一个报错信息"></message> -->
-    <div class="content">
-      <router-view></router-view>
+  <div class="page">
+    <div class="container">
+      <global-header :user="user"></global-header>
+      <!-- <loading text = "加载中"></loading> -->
+      <!-- <message type = "error" message="这是一个报错信息"></message> -->
+      <div class="content">
+        <router-view></router-view>
+      </div>
+      <global-footer></global-footer>
     </div>
-    <global-footer></global-footer>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed,onMounted } from "vue";
+import { defineComponent, computed, onMounted } from "vue";
 import GlobalHeader from "./components/GlobalHeader.vue";
 import GlobalFooter from "./components/GlobalFooter.vue";
 // import Message from "./components/Message.vue";
@@ -19,7 +21,7 @@ import GlobalFooter from "./components/GlobalFooter.vue";
 
 import { useStore } from "vuex";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {GlobalDataProps} from "./store/index";
+import { GlobalDataProps } from "./store/index";
 export default defineComponent({
   name: "App",
   components: {
@@ -39,10 +41,15 @@ export default defineComponent({
 </script>
 
 <style lang="less">
-.container{
-  height:100vh;
+.page {
+  display: flex;
+  .container {
+  min-height: 100vh;
+  .content {
+    height: calc(100% - 162px);
+  }
 }
-.content{
-  height:calc(100% - 200px);
 }
+
+
 </style>

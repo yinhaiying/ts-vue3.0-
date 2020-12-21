@@ -92,6 +92,8 @@ export default defineComponent({
               setTimeout(() => {
                 router.push({ name: "column", params: { id: columnId } });
               },2000);
+            }else{
+                createMessage(res.msg, "error");
             }
           });
         }
