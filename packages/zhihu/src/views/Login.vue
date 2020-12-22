@@ -1,8 +1,11 @@
 <template>
-  <div class="page">
+  <div class="login-page">
     <validate-form @form-submit="onFormSubmit">
-      <div class="mb-3">
-        <label for="" class="form-label">用户名</label>
+      <div class="form-item">
+        <h3>登录</h3>
+      </div>
+      <div class="mb-3 form-item">
+        <label for="" class="form-label">用户名：</label>
         <validate-input
           :rules="usernameRules"
           v-model="usernameVal"
@@ -10,18 +13,8 @@
           type="text"
         ></validate-input>
       </div>
-      <!-- <div class="mb-3">
-        <label for="" class="form-label">邮箱地址</label>
-        <validate-input
-          ref="inputRef"
-          :rules="emailRules"
-          v-model="emailVal"
-          placeholder="请输入邮箱"
-          type="text"
-        ></validate-input>
-      </div> -->
-      <div class="mb-3">
-        <label for="" class="form-label">密码</label>
+      <div class="mb-3 form-item">
+        <label for="" class="form-label">密码：</label>
         <validate-input
           :rules="passwordRules"
           v-model="passwordVal"
@@ -29,7 +22,9 @@
         ></validate-input>
       </div>
       <template v-slot:submit>
-        <button type="submit" class="btn btn-primary">登录</button>
+        <div class="mb-3 form-item">
+          <button type="submit" class="btn btn-primary">登录</button>
+        </div>   
       </template>
     </validate-form>
   </div>
@@ -97,4 +92,20 @@ export default defineComponent({
 });
 </script>
 <style lang="less" scoped>
+.login-page{
+  display:flex;
+  justify-content:center;
+  .form-item{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    .btn{
+      width:100%;
+    }
+    .form-label{
+      width:70px;
+    }
+  }
+}
+
 </style>

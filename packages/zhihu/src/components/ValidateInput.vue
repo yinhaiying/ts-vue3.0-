@@ -102,10 +102,14 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-    .input-wrapper{
-        position:relative;
-        .invalid-feedback{
-            position:absolute;
-        }
+.form-control.is-invalid, .was-validated .form-control:invalid{
+    padding:6px 12px !important;
+}
+.input-wrapper{
+    position:relative;
+    
+    .invalid-feedback{
+        position:absolute;
     }
+}
 </style>
