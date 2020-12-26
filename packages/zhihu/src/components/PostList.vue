@@ -16,8 +16,7 @@
               class="rounded-lg"
             />
           </div>
-          <p :class="{ 'col-8': post.image }" class="text-muted">
-            {{ post.content }}
+          <p :class="{ 'col-8': post.image }" class="text-muted text-wrapper" v-html = "post.content">
           </p>
         </div>
         <span class="text-muted">{{ post.createdAt }}</span>
@@ -51,7 +50,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style  lang = "less" scoped>
 .post-list h4 a {
   text-decoration: none;
   color: #1a1a1a;
@@ -59,4 +58,11 @@ export default defineComponent({
 .post-list h4 a:hover {
   color: #0d6efd;
 }
+.text-wrapper{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+}
+
 </style>
