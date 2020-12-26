@@ -27,17 +27,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
-
+import { defineComponent, computed,PropType } from "vue";
+import marked from "marked";
+import { PostProps } from "../store";
 export default defineComponent({
   props: {
     list: {
       required: true,
-      type: Array,
+      type: Array as PropType<PostProps[]>,
     },
   },
   setup(props) {
     const posts = computed(() => {
+      props.list.forEach((post) => {
+        post.content = marked(post.content);
+      })
       return props.list;
     });
     return {

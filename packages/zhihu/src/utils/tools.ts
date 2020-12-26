@@ -1,11 +1,16 @@
-type ObjProps = {
-  [key: string]: any;
-}
+// type ObjProps = {
+//   [key: string]: any;
+// }
 
-export const arrToObj = (arr: ObjProps[], name: string) => {
-  const result: ObjProps = {};
-  arr.forEach((item) => {
-    result[item[name]] = item;
+export const arrToObj = <T extends { _id?: number }>(arr: T[]) => {
+  type prop = {
+    [key: number]: T;
+  }
+  const result: prop = {};
+  arr.forEach((item: T) => {
+    if (item._id) {
+      result[item._id] = item;
+    }
   });
   return result;
 } 

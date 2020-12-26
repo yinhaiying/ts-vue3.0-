@@ -23,7 +23,7 @@ export interface PostsProps {
 }
 
 export type PostProps = {
-  id?: number;
+  _id?: number;
   title: string;
   content: string;
   avatar?: string;
@@ -104,16 +104,14 @@ const store = createStore<GlobalDataProps>({
     setError(state, e: GlobalErrorProps) {
       state.error = e;
     },
-    createPost(state, payload) {
-      // state.posts.push(payload);
+    createPost(state, rowData) {
+      state.posts.data[rowData.data._id] = rowData.data;
     },
     fetchColumns(state, rowData) {
       state.columns = rowData.data;
     },
     fetchPosts(state, posts) {
-      console.log("posts:", posts)
-      state.posts.data = arrToObj(posts, "_id");
-      // state.posts = posts;
+      state.posts.data = arrToObj(posts);
     },
     createColumn(state, rowData) {
       state.columns.push(rowData.data);
