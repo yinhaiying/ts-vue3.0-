@@ -1,6 +1,6 @@
 import { createStore } from "vuex";
-import { testData } from "../testData";
 import axios from "axios";
+import { arrToObj} from "../utils/tools"
 export interface ColumnProps {
   columnId: number;
   title: string;
@@ -16,7 +16,13 @@ interface UserProps {
   authorId?: string;
   createdAt?: string;
 }
-export interface PostProps {
+export interface PostsProps {
+  data: {
+    [key: string]: PostProps;
+  };
+}
+
+export type PostProps = {
   id?: number;
   title: string;
   content: string;
@@ -25,10 +31,9 @@ export interface PostProps {
   columnId: number;
   author: string;
 }
-
 export interface GlobalDataProps {
   columns: ColumnProps[];
-  posts: PostProps[];
+  posts: PostsProps;
   user: UserProps;
   token: string;
   error: GlobalErrorProps;
@@ -43,7 +48,9 @@ export interface GlobalErrorProps{
 const store = createStore<GlobalDataProps>({
   state: {
     columns: [],
-    posts: [],
+    posts: {
+      data:{}
+    },
     user: {
       isLogin: false,
     },
@@ -65,7 +72,14 @@ const store = createStore<GlobalDataProps>({
     },
     getPostByCid: (state) => (cId: number) => {
       console.log("state.posts:",state.posts);
-      return state.posts.filter((post) => post.columnId === cId);
+      const data = state.posts.data;
+      const result = [];
+      for(const attr in data){
+        if(data[attr].columnId === cId){
+          result.push(data[attr]);
+        }
+      }
+      return result;
     },
   },
   mutations: {
@@ -88,16 +102,22 @@ const store = createStore<GlobalDataProps>({
       state.error = e;
     },
     createPost(state, payload) {
-      state.posts.push(payload);
+      // state.posts.push(payload);
     },
     fetchColumns(state,rowData){
       state.columns = rowData.data;
     },
-    fetchPosts(state,rowData){
-      state.posts = rowData;
+    fetchPosts(state,posts){
+      console.log("posts:",posts)
+      state.posts.data = arrToObj(posts,"_id");
+      // state.posts = posts;
     },
     createColumn(state,rowData){
       state.columns.push(rowData.data);
+    },
+    fetchCurrentPost(state,rowData){
+      // 为了避免刷新时数据丢失，最好所有的数据都通过vue中的store能够获取到.
+      console.log("rowData111:",rowData);
     }
   },
   actions:{
@@ -148,6 +168,12 @@ const store = createStore<GlobalDataProps>({
     createColumn({commit},params){
       return axios.post("/api/columns/createColumn",params).then((res) => {
         commit("createColumn",res.data);
+        return res.data;
+      })
+    },
+    fetchCurrentPost({commit},postId){
+      return axios.get(`/api/posts/${postId}`).then((res) => {
+        commit("fetchCurrentPost",res.data);
         return res.data;
       })
     }
