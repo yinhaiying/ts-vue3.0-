@@ -5,6 +5,7 @@
     "lerna": "^3.22.1"
   },
   "dependencies": {
+    "marked": "^1.2.7",
     "mitt": "^2.1.0"
   }
 }
